@@ -1,8 +1,10 @@
 
 # Django
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 # Models
+from django.contrib.auth.models import User
 from users.models import Profile
 
 @admin.register(Profile)
@@ -31,3 +33,55 @@ class ProfileAdmin(admin.ModelAdmin):
         'user__is_active',
         'user__is_staff'
     ]
+
+    # fieldsets agrupa los campos mostrados en la interfaz admin,
+    # de acuerdo con el titulo que le pongamos, en este ejemplo
+    # los campos user y picture estaran en la seccion fieldsets
+    fieldsets = (
+        ('Profile', {
+            'fields': (
+                'user', 'picture',
+            )
+        }),
+        ('Extra info', {
+            'fields': (
+                ('website', 'phone_number'),
+                ('biography')
+            )
+        }),
+        ('Metadata', {
+            'fields': (
+                ('created', 'modified')
+            )
+        })
+    )
+
+    # Muestra las variables del parentesis en pantalla, 
+    # como no editables
+    readonly_fields = ('created', 'modified', 'user')
+
+
+class ProfileInLine(admin.StackedInline):
+    """ 
+        Create a profile admin interface with 
+        user admin interface on the same page
+     """
+    model = Profile
+    can_delete = False
+    verbose_name_plural = 'Profiles'
+
+class UserAdmin(BaseUserAdmin):
+    """ Adds profile admin to base user admin """
+    inlines = (ProfileInLine, )
+    list_display = (
+        'username',
+        'email', 
+        'first_name',
+        'last_name',
+        'is_active',
+        'is_staff'
+    )
+
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
