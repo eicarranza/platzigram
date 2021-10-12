@@ -1,20 +1,13 @@
 """ Users views. """
 
 # Django 
-from django.contrib import auth
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
-# utils
-from django.db.utils import IntegrityError
-
-# Models
-from django.contrib.auth.models import User
-from users.models import Profile
-
 # Forms
 from users.forms import ProfileForm
+from users.forms import SignupForm
 
 @login_required
 def update_profile(request):
@@ -31,7 +24,6 @@ def update_profile(request):
             profile.biography = data['biography']
             profile.picture = data['picture']
             profile.save()
-            print(data)
             return redirect('update_profile')
 
     else:
@@ -59,31 +51,20 @@ def login_view(request):
             return render(request, 'users/login.html', {'error': 'Invalid username and password'})
     return render(request, 'users/login.html')
 
-
 def signup_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        password_confirmation = request.POST['password_confirmation']
-        
-        if password != password_confirmation:
-            return render(request, 'users/signup.html', {'error': 'Password confirmation does not match'})
-        
-        try:
-            user = User.objects.create_user(username=username, password=password)
-        except IntegrityError:
-            return render(request, 'users/signup.html', {'error': 'Username is already in use'})
-        
-        user.first_name = request.POST['first_name']
-        user.last_name = request.POST['last_name']
-        user.email = request.POST['email_address']
-        user.save()
-        
-        profile = Profile(user=user)
-        profile.save()
+        form = SignupForm(request.POST)
+        if form.is_valid:
+            form.save()
+            return redirect('login')
+    else:
+        form = SignupForm()
 
-        return redirect('login')
-    return render(request, 'users/signup.html')
+    return render(
+        request = request,
+        template_name = 'users/signup.html',
+        context={'form': form}
+    )
 
 @login_required
 def logout_view(request):
