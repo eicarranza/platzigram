@@ -6,5 +6,5 @@ Platzigram es un projecto minimo (inspirado en Instagram) el cual fue  construid
 [Platzi Django Course](https://platzi.com/cursos/django/ "Platzi Django Course")
 ## Instructor
 [Pablo Trinidad](https://github.com/pablotrinidad "Pablo Trinidad")
-##Repository
+## Repository
 [Repository on github](https://github.com/pablotrinidad/platzigram "Repository on github")
