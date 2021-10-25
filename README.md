@@ -1,6 +1,6 @@
 # Platzigram
 
-Platzigram es un projecto minimo (inspirado en Instagram) el cual fue  construido a partir del curso de Django de Platzi.  Este projecto tiene por objeto poner en practica los conocimientos en Python 3, siguiendo las buenas practicas en la construccion de software.  
+Platzigram is a minimal project (inspired by Instagram) which was built from Platzi's Django course.  This project aims to put into practice the knowledge in Python 3, following good practices in building software.  
 
 ## Course
 [Platzi Django Course](https://platzi.com/cursos/django/ "Platzi Django Course")
